@@ -7,10 +7,11 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Tymon\JWTAuth\Contracts\JWTSubject;
+use Grimzy\LaravelMysqlSpatial\Eloquent\SpatialTrait;
 
 class User extends Authenticatable implements JWTSubject
 {
-    use HasFactory, Notifiable;
+    use HasFactory, Notifiable, SpatialTrait;
 
     // Rest omitted for brevity
 
@@ -43,6 +44,16 @@ class User extends Authenticatable implements JWTSubject
         'name',
         'email',
         'password',
+        'tagline',
+        'about',
+        'username',
+        'location',
+        'password',
+        'available_to_hire'
+    ];
+
+    protected $spatialFields = [
+        'location'
     ];
 
     /**
@@ -63,4 +74,6 @@ class User extends Authenticatable implements JWTSubject
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+
 }
