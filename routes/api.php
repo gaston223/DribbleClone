@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\VerificationController;
 use Illuminate\Http\Request;
@@ -29,6 +30,7 @@ Route::group(['middleware' => ['guest:api']], function (){
     Route::post('register', [RegisterController::class, 'register']);
     Route::post('verification/verify/{user}', [VerificationController::class, 'verify'])->name('verification.verify');
     Route::post('verification/resend', [VerificationController::class, 'resend']);
+    Route::post('login', [LoginController::class, 'login']);
 });
 
 Route::get('/', function (){
