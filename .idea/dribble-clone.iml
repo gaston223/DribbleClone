@@ -122,6 +122,8 @@
       <excludeFolder url="file://$MODULE_DIR$/vendor/geo-io/wkb-parser" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/grimzy/laravel-mysql-spatial" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/laravel/ui" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/laravel/telescope" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/laravel/breeze" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

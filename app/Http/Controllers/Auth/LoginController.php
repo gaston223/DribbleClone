@@ -3,64 +3,105 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Models\User;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
-use Illuminate\Validation\ValidationException;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 
 class LoginController extends Controller
 {
+    /*
+    |--------------------------------------------------------------------------
+    | Login Controller
+    |--------------------------------------------------------------------------
+    |
+    | This controller handles authenticating users for the application and
+    | redirecting them to your home screen. The controller uses a trait
+    | to conveniently provide its functionality to your applications.
+    |
+    */
 
     use AuthenticatesUsers;
 
+    /**
+     * Where to redirect users after login.
+     *
+     * @var string
+     */
+    //protected $redirectTo = RouteServiceProvider::HOME;
+
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('guest')->except('logout');
+    }
+
+    /**
+     * Handle an authentication attempt.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function attemptLogin(Request $request)
     {
-        // * attempt to issue to the user based ont the login credentials
-        $token = $this->guard()->attempt($this->credentials($request));
+        $credentials = $request->validate([
+            'email' => ['required', 'email'],
+            'password' => ['required'],
+        ]);
 
-        if (!$token){
-            return false;
+        //dd(Auth::attempt($credentials));
+        if (Auth::attempt($credentials)) {
+            //dd('OK1');
+            $request->session()->regenerate();
+            //dd('Ok');
+            return redirect('/telescope');
         }
-        // * Get the authenticated user
-        $user = $this->guard()->user();
 
-        if($user instanceof MustVerifyEmail && ! $user->hasVerifiedEmail()){
-            return false;
-        }
-
-        // * set the user's token
-        $this->guard()->setToken($token);
-
-        return true;
-    }
-
-    protected function sendLoginResponse(Request $request)
-    {
-        $this->clearLoginAttempts($request);
-
-        // * set the token from the authentication guard (JWT)
-        $token = (string)$this->guard()->getToken();
-
-        // * extract the expiry date of token
-        $expiration = $this->guard()->getPayload()->get('exp');
-        return response()->json([
-            'token' => $token,
-            'token_type' => 'bearer',
-            'expires_in' => $expiration
+        return back()->withErrors([
+            'email' => 'The provided credentials do not match our records.',
         ]);
     }
 
-    protected function sendFailedLoginResponse(Request $request)
+    public function showLoginForm()
     {
-        $user = $this->guard()->user();
-        if($user instanceof MustVerifyEmail && ! $user->hasVerifiedEmail()){
-            return response()->json([
-                "errors" => "You need to verify your email account"
+        return view('auth.login');
+    }
+
+    public function login(Request $request)
+    {
+        $credentials = $request->validate([
+            'email' => ['required', 'email'],
+            'password' => ['required'],
+        ]);
+
+        if (Auth::attempt($credentials)) {
+            //$request->session()->regenerate();
+            //dd(Auth::user()->role);
+
+            if(Auth::user()->role !== 'admin'){
+                //dd("Ok11");
+                return back()->withErrors([
+                    'email' => "You're not allowed to see this page",
+                ]);
+            }
+            return redirect('/telescope');
+        }else{
+            return back()->withErrors([
+                'email' => 'The provided credentials do not match our records.',
             ]);
         }
-        throw ValidationException::withMessages([
-            $this->username() => 'Authentication failed'
-        ]);
+    }
+
+    public function logout()
+    {
+        Auth::logout();
+
+        return redirect('admin/login');
     }
 
 }

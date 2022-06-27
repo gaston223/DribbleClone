@@ -52,7 +52,8 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail
         'username',
         'location',
         'password',
-        'available_to_hire'
+        'available_to_hire',
+        'role'
     ];
 
     protected $spatialFields = [
@@ -81,5 +82,13 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail
     public function sendEmailVerificationNotification()
     {
         $this->notify(new VerifyEmail);
+    }
+
+    /**
+     * @return bool
+     */
+    public function isAdmin()
+    {
+        return $this->role ==='admin';
     }
 }
