@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Admin\Auth\LoginController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -26,5 +26,5 @@ Route::get('/admin/login', function (){
 Route::post('/admin/login', [LoginController::class, 'adminLogin'])->name('admin.login');
 Route::post('/admin/logout',  [LoginController::class, 'adminLogout'])->name('admin.logout');
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/home', [\App\Http\Controllers\Admin\HomeController::class, 'index'])->name('home');
 

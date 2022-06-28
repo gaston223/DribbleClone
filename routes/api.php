@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\Auth\LoginController;
 use App\Http\Controllers\Api\Auth\RegisterController;
 use App\Http\Controllers\Api\Auth\VerificationController;
+use App\Http\Controllers\Api\User\MeController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -17,14 +18,17 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-//Route group for authenticated users only
+// * Public routes
+Route::get('me', [MeController::class, 'getMe']);
+
+// * Route group for authenticated users only
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-//Routes for guests only
+// * Routes for guests only
 Route::group(['middleware' => ['auth:api']], function (){
-
+    Route::post('logout', [LoginController::class, 'logout']);
 });
 Route::group(['middleware' => ['guest:api']], function (){
     Route::post('register', [RegisterController::class, 'register']);
