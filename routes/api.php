@@ -1,7 +1,9 @@
 <?php
 
+use App\Http\Controllers\Api\Auth\ForgotPasswordController;
 use App\Http\Controllers\Api\Auth\LoginController;
 use App\Http\Controllers\Api\Auth\RegisterController;
+use App\Http\Controllers\Api\Auth\ResetPasswordController;
 use App\Http\Controllers\Api\Auth\VerificationController;
 use App\Http\Controllers\Api\User\MeController;
 use Illuminate\Http\Request;
@@ -35,6 +37,8 @@ Route::group(['middleware' => ['guest:api']], function (){
     Route::post('verification/verify/{user}', [VerificationController::class, 'verify'])->name('verification.verify');
     Route::post('verification/resend', [VerificationController::class, 'resend']);
     Route::post('login', [LoginController::class, 'login']);
+    Route::post('password/email', [ForgotPasswordController::class, 'sendResetLinkEmail']);
+    Route::post('password/reset', [ResetPasswordController::class, 'reset'])->name('password.reset');
 });
 
 Route::get('/', function (){

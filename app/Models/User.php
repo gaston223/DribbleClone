@@ -4,6 +4,7 @@ namespace App\Models;
 
 
 use App\Notifications\VerifyEmail;
+use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -84,11 +85,9 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail
         $this->notify(new VerifyEmail);
     }
 
-    /**
-     * @return bool
-     */
-    public function isAdmin()
+    public function sendPasswordResetNotification($token)
     {
-        return $this->role ==='admin';
+        $this->notify(new ResetPassword($token));
     }
+
 }
