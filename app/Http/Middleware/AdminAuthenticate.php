@@ -2,7 +2,7 @@
 
 namespace App\Http\Middleware;
 
-use App\Models\User;
+
 use Closure;
 use Illuminate\Contracts\Auth\Factory;
 use Illuminate\Http\Request;
@@ -32,15 +32,10 @@ class AdminAuthenticate
      */
     public function handle(Request $request, Closure $next)
     {
-        if (!Auth::check()){
-           return redirect()->route('show.login.form');
+        if (!Auth::guard('admin')->check()){
+           return redirect()->route('admin.login');
         }else{
-            $user = User::find(Auth::user())->first();
-            if($user->role === 'admin'){
-                return $next($request);
-            }else{
-               abort(403, "Vous n'etes pas autorisé !");
-            }
+            return $next($request);
         }
     }
 
@@ -52,8 +47,6 @@ class AdminAuthenticate
      */
     protected function redirectTo($request)
     {
-        if (! $request->expectsJson()) {
-            return route('/');
-        }
+        return route('/home');
     }
 }

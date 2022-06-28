@@ -1,7 +1,6 @@
 <?php
 
 use App\Http\Controllers\Auth\LoginController;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -24,8 +23,8 @@ Route::get('/', function () {
 Route::get('/admin/login', function (){
     return view('auth.login');
 });
-Route::post('/admin/login', [LoginController::class, 'login'])->name('show.login.form');
-Route::post('/admin/logout',  [LoginController::class, 'logout'])->name('performLogout');
+Route::post('/admin/login', [LoginController::class, 'adminLogin'])->name('admin.login');
+Route::post('/admin/logout',  [LoginController::class, 'adminLogout'])->name('admin.logout');
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 

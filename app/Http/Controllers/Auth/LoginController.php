@@ -3,11 +3,10 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Models\User;
+use App\Models\Admin;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Session;
 
 class LoginController extends Controller
 {
@@ -39,57 +38,20 @@ class LoginController extends Controller
     public function __construct()
     {
         $this->middleware('guest')->except('logout');
+        //$this->middleware('guest:admin')->except('logout');
     }
 
-    /**
-     * Handle an authentication attempt.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\RedirectResponse
-     */
-    public function attemptLogin(Request $request)
+
+    public function adminLogin(Request $request)
     {
         $credentials = $request->validate([
             'email' => ['required', 'email'],
             'password' => ['required'],
         ]);
-
-        //dd(Auth::attempt($credentials));
-        if (Auth::attempt($credentials)) {
-            //dd('OK1');
-            $request->session()->regenerate();
-            //dd('Ok');
-            return redirect('/telescope');
-        }
-
-        return back()->withErrors([
-            'email' => 'The provided credentials do not match our records.',
-        ]);
-    }
-
-    public function showLoginForm()
-    {
-        return view('auth.login');
-    }
-
-    public function login(Request $request)
-    {
-        $credentials = $request->validate([
-            'email' => ['required', 'email'],
-            'password' => ['required'],
-        ]);
-
-        if (Auth::attempt($credentials)) {
-            //$request->session()->regenerate();
-            //dd(Auth::user()->role);
-
-            if(Auth::user()->role !== 'admin'){
-                //dd("Ok11");
-                return back()->withErrors([
-                    'email' => "You're not allowed to see this page",
-                ]);
-            }
-            return redirect('/telescope');
+        if (Auth::guard('admin')->attempt($credentials)) {
+            $admin = Admin::firstWhere('email', $request->email);
+            Auth::guard('admin')->login($admin);
+            return redirect()->intended('admin/telescope');
         }else{
             return back()->withErrors([
                 'email' => 'The provided credentials do not match our records.',
@@ -97,9 +59,9 @@ class LoginController extends Controller
         }
     }
 
-    public function logout()
+    public function adminLogout()
     {
-        Auth::logout();
+        Auth::guard('admin')->logout();
 
         return redirect('admin/login');
     }
