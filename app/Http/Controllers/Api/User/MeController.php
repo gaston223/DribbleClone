@@ -7,6 +7,10 @@ use App\Http\Resources\UserResource;
 
 class MeController extends Controller
 {
+    /**
+     * Get self Profile
+     * @return UserResource|\Illuminate\Http\JsonResponse
+     */
     public function getMe()
     {
         if (auth()->check()){
