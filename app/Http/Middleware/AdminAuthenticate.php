@@ -47,6 +47,6 @@ class AdminAuthenticate
      */
     protected function redirectTo($request)
     {
-        return route('/home');
+        return route('admin.login');
     }
 }

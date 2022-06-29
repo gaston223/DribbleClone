@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\Auth\LoginController;
+use App\Http\Controllers\Admin\HomeController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -18,13 +19,20 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-//Auth::routes();
-
-Route::get('/admin/login', function (){
-    return view('auth.login');
+// * Route for guests only
+Route::group(['middleware' => ['guest:web']], function (){
+    Route::get('/admin/login', function (){
+        return view('auth.login');
+    });
+    Route::post('/admin/login', [LoginController::class, 'adminLogin'])->name('admin.login');
 });
-Route::post('/admin/login', [LoginController::class, 'adminLogin'])->name('admin.login');
-Route::post('/admin/logout',  [LoginController::class, 'adminLogout'])->name('admin.logout');
 
-Route::get('/home', [\App\Http\Controllers\Admin\HomeController::class, 'index'])->name('home');
+
+Route::group(['middleware' => ['admin:web']], function (){
+    Route::get('admin/home', [HomeController::class, 'index'])->name('home');
+    Route::post('/admin/logout',  [LoginController::class, 'adminLogout'])->name('admin.logout');
+});
+
+
+
 
