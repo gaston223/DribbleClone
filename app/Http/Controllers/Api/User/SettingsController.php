@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Api\User;
 
 
-use App\Http\Controllers\Api\Controller;
+use App\Http\Controllers\Controller;
 use App\Http\Resources\UserResource;
 use App\Rules\CheckSamePassword;
 use App\Rules\MatchOldPassword;

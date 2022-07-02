@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Api\Auth;
 
 
-use App\Http\Controllers\Api\Controller;
+use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\SendsPasswordResetEmails;
 use Illuminate\Http\Request;
 

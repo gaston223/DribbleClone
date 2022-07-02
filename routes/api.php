@@ -5,9 +5,10 @@ use App\Http\Controllers\Api\Auth\LoginController;
 use App\Http\Controllers\Api\Auth\RegisterController;
 use App\Http\Controllers\Api\Auth\ResetPasswordController;
 use App\Http\Controllers\Api\Auth\VerificationController;
+use App\Http\Controllers\Api\Designs\DesignController;
+use App\Http\Controllers\Api\Designs\UploadController;
 use App\Http\Controllers\Api\User\MeController;
 use App\Http\Controllers\Api\User\SettingsController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -29,6 +30,8 @@ Route::group(['middleware' => ['auth:api']], function (){
     Route::post('logout', [LoginController::class, 'logout']);
     Route::put('settings/profile', [SettingsController::class, 'updateProfile']);
     Route::put('settings/password', [SettingsController::class, 'updatePassword']);
+    Route::post('designs',[UploadController::class, 'upload']);
+    Route::put('designs/{id}', [DesignController::class, 'update']);
 });
 
 // * Routes for guests only
