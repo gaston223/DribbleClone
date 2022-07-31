@@ -2,15 +2,14 @@
 
 namespace App\Models;
 
-
 use App\Notifications\VerifyEmail;
+use Grimzy\LaravelMysqlSpatial\Eloquent\SpatialTrait;
 use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Tymon\JWTAuth\Contracts\JWTSubject;
-use Grimzy\LaravelMysqlSpatial\Eloquent\SpatialTrait;
 
 class User extends Authenticatable implements JWTSubject, MustVerifyEmail
 {
@@ -55,11 +54,11 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail
         'formatted_address',
         'password',
         'available_to_hire',
-        'role'
+        'role',
     ];
 
     protected $spatialFields = [
-        'location'
+        'location',
     ];
 
     /**
@@ -95,5 +94,4 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail
     {
         return $this->hasMany(Design::class);
     }
-
 }

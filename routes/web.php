@@ -20,19 +20,14 @@ Route::get('/', function () {
 });
 
 // * Route for guests only
-Route::group(['middleware' => ['guest:web']], function (){
-    Route::get('/admin/login', function (){
+Route::group(['middleware' => ['guest:web']], function () {
+    Route::get('/admin/login', function () {
         return view('auth.login');
     });
     Route::post('/admin/login', [LoginController::class, 'adminLogin'])->name('admin.login');
 });
 
-
-Route::group(['middleware' => ['admin:web']], function (){
+Route::group(['middleware' => ['admin:web']], function () {
     Route::get('admin/home', [HomeController::class, 'index'])->name('home');
-    Route::post('/admin/logout',  [LoginController::class, 'adminLogout'])->name('admin.logout');
+    Route::post('/admin/logout', [LoginController::class, 'adminLogout'])->name('admin.logout');
 });
-
-
-
-

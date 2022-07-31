@@ -2,7 +2,6 @@
 
 namespace App\Jobs;
 
-
 use App\Models\Design;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -18,6 +17,7 @@ class UploadImage implements ShouldQueue
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     protected $design;
+
     /**
      * Create a new job instance.
      *
@@ -41,37 +41,33 @@ class UploadImage implements ShouldQueue
 
         try {
             Image::make($original_file)
-                ->fit(800, 600, function ($constraint){
+                ->fit(800, 600, function ($constraint) {
                     $constraint->aspectRatio();
                 })
-                ->save($large = storage_path('uploads/large/'. $filename));
+                ->save($large = storage_path('uploads/large/'.$filename));
 
             Image::make($original_file)
-                ->fit(250, 200, function ($constraint){
+                ->fit(250, 200, function ($constraint) {
                     $constraint->aspectRatio();
                 })
-                ->save($thumbnail = storage_path('uploads/thumbnail/'. $filename));
+                ->save($thumbnail = storage_path('uploads/thumbnail/'.$filename));
 
-            if(Storage::disk($disk)->put('uploads/designs/original/'.$filename, fopen($original_file, 'r+')))
-            {
+            if (Storage::disk($disk)->put('uploads/designs/original/'.$filename, fopen($original_file, 'r+'))) {
                 File::delete($original_file);
             }
 
-            if(Storage::disk($disk)->put('uploads/designs/large/'.$filename, fopen($large, 'r+')))
-            {
+            if (Storage::disk($disk)->put('uploads/designs/large/'.$filename, fopen($large, 'r+'))) {
                 File::delete($large);
             }
 
-            if(Storage::disk($disk)->put('uploads/designs/thumbnail/'.$filename, fopen($thumbnail, 'r+')))
-            {
+            if (Storage::disk($disk)->put('uploads/designs/thumbnail/'.$filename, fopen($thumbnail, 'r+'))) {
                 File::delete($thumbnail);
             }
 
             $this->design->update([
-               'upload_successfully' => true
+                'upload_successfully' => true,
             ]);
-
-        }catch (\Exception $e){
+        } catch (\Exception $e) {
             \Log::error($e->getMessage());
         }
     }

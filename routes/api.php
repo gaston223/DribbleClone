@@ -26,16 +26,16 @@ use Illuminate\Support\Facades\Route;
 Route::get('me', [MeController::class, 'getMe']);
 
 // * Route group for authenticated users only
-Route::group(['middleware' => ['auth:api']], function (){
+Route::group(['middleware' => ['auth:api']], function () {
     Route::post('logout', [LoginController::class, 'logout']);
     Route::put('settings/profile', [SettingsController::class, 'updateProfile']);
     Route::put('settings/password', [SettingsController::class, 'updatePassword']);
-    Route::post('designs',[UploadController::class, 'upload']);
+    Route::post('designs', [UploadController::class, 'upload']);
     Route::put('designs/{id}', [DesignController::class, 'update']);
 });
 
 // * Routes for guests only
-Route::group(['middleware' => ['guest:api']], function (){
+Route::group(['middleware' => ['guest:api']], function () {
     Route::post('register', [RegisterController::class, 'register']);
     Route::post('verification/verify/{user}', [VerificationController::class, 'verify'])->name('verification.verify');
     Route::post('verification/resend', [VerificationController::class, 'resend']);
@@ -44,6 +44,6 @@ Route::group(['middleware' => ['guest:api']], function (){
     Route::post('password/reset', [ResetPasswordController::class, 'reset'])->name('password.reset');
 });
 
-Route::get('/', function (){
+Route::get('/', function () {
     return response()->json(['message' => 'Hello World'], 200);
 });

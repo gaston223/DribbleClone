@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Api\Auth;
 
-
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\ResetsPasswords;
 use Illuminate\Http\Request;
@@ -32,7 +31,6 @@ class ResetPasswordController extends Controller
         return response()->json(['status' => trans($response)], 200);
     }
 
-
     /*public function reset(Request $request)
     {
         $request->validate([
@@ -59,5 +57,4 @@ class ResetPasswordController extends Controller
         }
 
     }*/
-
 }

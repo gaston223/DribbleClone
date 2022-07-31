@@ -1,7 +1,6 @@
 <?php
 
 use App\Http\Middleware\AdminAuthenticate;
-use Laravel\Telescope\Http\Middleware\Authorize;
 use Laravel\Telescope\Watchers;
 
 return [

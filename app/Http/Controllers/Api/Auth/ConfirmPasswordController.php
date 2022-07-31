@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Api\Auth;
 
-
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\ConfirmsPasswords;

@@ -25,12 +25,12 @@ class AdminFactory extends Factory
     {
         $password = 'MoEshaAdminDu91!';
         $password = Hash::make($password);
+
         return [
             'username' => 'Admin',
             'email' => 'gastonadmin@gmail.com',
             'password' => $password, // password
             'remember_token' => Str::random(10),
         ];
-
     }
 }

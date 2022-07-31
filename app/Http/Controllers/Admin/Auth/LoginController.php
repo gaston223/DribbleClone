@@ -41,7 +41,6 @@ class LoginController extends Controller
         //$this->middleware('guest:admin')->except('logout');
     }
 
-
     public function adminLogin(Request $request)
     {
         $credentials = $request->validate([
@@ -51,8 +50,9 @@ class LoginController extends Controller
         if (Auth::guard('admin')->attempt($credentials)) {
             $admin = Admin::firstWhere('email', $request->email);
             Auth::guard('admin')->login($admin);
+
             return redirect()->intended('admin/telescope');
-        }else{
+        } else {
             return back()->withErrors([
                 'email' => 'The provided credentials do not match our records.',
             ]);
@@ -65,5 +65,4 @@ class LoginController extends Controller
 
         return redirect('admin/login');
     }
-
 }

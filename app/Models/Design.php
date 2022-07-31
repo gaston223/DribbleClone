@@ -9,7 +9,7 @@ class Design extends Model
 {
     use HasFactory;
 
-    protected $fillable=[
+    protected $fillable = [
         'user_id',
         'image',
         'title',
@@ -18,7 +18,7 @@ class Design extends Model
         'close_to_comment',
         'is_live',
         'upload_successfully',
-        'disk'
+        'disk',
     ];
 
     public function user()

@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Api\Auth;
 
-
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Foundation\Auth\RegistersUsers;
@@ -29,7 +28,6 @@ class RegisterController extends Controller
     {
         return response()->json($user, 200);
     }
-
 
     /**
      * Get a validator for an incoming registration request.

@@ -2,7 +2,11 @@
 
 namespace App\Exceptions;
 
+use Exception;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Http\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -37,5 +41,21 @@ class Handler extends ExceptionHandler
         $this->reportable(function (Throwable $e) {
             //
         });
+    }
+
+    /**
+     * @param $request
+     * @param  Exception  $e
+     * @return JsonResponse|Response|void
+     */
+    public function render($request, Throwable $e)
+    {
+        if ($e instanceof AuthorizationException) {
+            if ($request->expectsJson()) {
+                return response()->json([
+                    'errors' => ['message' => 'You are not authorized to access this resource',
+                    ], ], 403);
+            }
+        }
     }
 }
